@@ -51,6 +51,33 @@ class authController {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+
+  async login(req, res) {
+    try {
+      const { email, password } = req.body;
+
+      if(!email || !password) {
+        res.status(400).json({ message: "Не все поля заполнены" })
+      }
+
+      const user = await User.findOne({ email })
+      if(!user) {
+        res.status(400).json({ message: "Неправильная почта" })
+      }
+
+      const validPassword = bcrypt.compareSync(password, user.password)
+      if (!validPassword) {
+        return res.status(400).json({ message: "Непарвильный пароль" });
+      }
+
+      const token = generateToken(user);
+
+      return res.status(201).json({ message: "Вы успешно вошли!", token });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Ошибка при входе" })
+    }
+  }
 }
 
 module.exports = new authController();
