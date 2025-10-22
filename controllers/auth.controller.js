@@ -51,6 +51,36 @@ class authController {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+
+  // getRole
+
+  async getUsersRolesAdmin(req, res){
+    try{
+      const adminUsers = await User.find({roles: "admin"});
+      return res.status(200).json(adminUsers);
+    }catch (error){
+      return res.status(500).json({massage: "Ошибка получения пользователь с ролью admin"})
+    }
+  }
+
+    async getUsersRolesUser(req, res){
+    try{
+      const userUsers = await User.find({roles: "user"});
+      return res.status(200).json(userUsers);
+    }catch (error){
+      return res.status(500).json({massage: "Ошибка получения пользователь с ролью user"})
+    }
+  }
+
+    async getUsersRolesStudent(req, res){
+    try{
+      const studentUsers = await User.find({roles: "student"});
+      return res.status(200).json(studentUsers);
+    }catch (error){
+      return res.status(500).json({massage: "Ошибка получения пользователь с ролью student"})
+    }
+  }
+  
 }
 
 module.exports = new authController();
