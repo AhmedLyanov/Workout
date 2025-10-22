@@ -1,25 +1,28 @@
-const express = require("express");
-const mongoose = require("mongoose")
-const authRouter = require("./routes/auth.route")
-const cors = require('cors');
+import express from "express";
+import mongoose from "mongoose";
+import authRouter from "./routes/auth.route.js";
+import cors from "cors";
+import dotenv from "dotenv";
+
 const app = express();
-require('dotenv').config();
-app.use(express.json())
+dotenv.config();
+
+app.use(express.json());
 app.use("/auth", authRouter);
 app.use('/uploads', express.static('uploads'));
 app.use(cors({
     origin: "*"
-}))
+}));
 
 const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
-    res.status(200).json({message:"worked"})
-})
+    res.status(200).json({message:"worked"});
+});
 
 app.listen(PORT, () => {
   mongoose.connect(process.env.MONGODB_CONNECT || "mongodb://localhost:27017/")
   .then(() => console.log('DB connected'))
-  .catch(() => console.error("Error connected",))
+  .catch(() => console.error("Error connected"));
   console.log(`Server started, port:${PORT}`);
 });

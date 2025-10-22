@@ -1,8 +1,10 @@
-const User = require("../models/User.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
-require("dotenv").config();
+import User from "../models/User.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import fs from "fs";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 function generateToken(user) {
   return jwt.sign(
@@ -14,7 +16,7 @@ function generateToken(user) {
   );
 }
 
-class authController {
+class AuthController {
   async registration(req, res) {
     try {
       const { firstName, lastName, patronymic, email, password, phoneNumber } =
@@ -52,35 +54,47 @@ class authController {
     }
   }
 
-  // getRole
-
-  async getUsersRolesAdmin(req, res){
-    try{
-      const adminUsers = await User.find({roles: "admin"});
-      return res.status(200).json(adminUsers);
-    }catch (error){
-      return res.status(500).json({massage: "Ошибка получения пользователь с ролью admin"})
+  async getUsersRolesAdmin(req, res) {
+    try {
+      const adminUsers = await User.find({ roles: "admin" });
+      return res.status(200).json({
+        list: adminUsers.length,
+        admins: adminUsers,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Ошибка получения пользователей с ролью admin" });
     }
   }
 
-    async getUsersRolesUser(req, res){
-    try{
-      const userUsers = await User.find({roles: "user"});
-      return res.status(200).json(userUsers);
-    }catch (error){
-      return res.status(500).json({massage: "Ошибка получения пользователь с ролью user"})
+  async getUsersRolesUser(req, res) {
+    try {
+      const userUsers = await User.find({ roles: "user"});
+      return res.status(200).json({
+        list: userUsers.length,
+        users: userUsers,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Ошибка получения пользователей с ролью user" });
     }
   }
 
-    async getUsersRolesStudent(req, res){
-    try{
-      const studentUsers = await User.find({roles: "student"});
-      return res.status(200).json(studentUsers);
-    }catch (error){
-      return res.status(500).json({massage: "Ошибка получения пользователь с ролью student"})
+  async getUsersRolesStudent(req, res) {
+    try {
+      const studentUsers = await User.find({ roles: "student" });
+      return res.status(200).json({
+        list: studentUsers.length,
+        students: studentUsers,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Ошибка получения пользователей с ролью student" });
     }
   }
-  
 }
 
-module.exports = new authController();
+export default new AuthController();
