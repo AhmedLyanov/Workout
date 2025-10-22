@@ -9,7 +9,7 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     phoneNumber: { type: Number, unique: true },
     avatar: { type: String },
-    roles: { type: Array, default: ["student"] },
+    roles: { type: Array, default: ["student"] }, // admin  ?  user
   },
   { timestamps: true }
 );
