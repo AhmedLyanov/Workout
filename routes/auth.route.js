@@ -1,16 +1,14 @@
-const Router = require("express");
-const authController = require("../controllers/auth.controller")
-const upload = require("../config/multer")
+import { Router } from "express";
+import authController from "../controllers/auth.controller.js";
+import upload from "../config/multer.js";
 
-const authRouter = new Router();
+const authRouter = Router();
 
 authRouter.post('/registration', upload.single('avatar'), authController.registration);
 
-
-
 // getUsersRole
-authRouter.get('/role/admin', authController.getUsersRolesAdmin)
-authRouter.get('/role/user', authController.getUsersRolesUser)
-authRouter.get('/role/student', authController.getUsersRolesStudent)
+authRouter.get('/role/admin', authController.getUsersRolesAdmin);
+authRouter.get('/role/user', authController.getUsersRolesUser);
+authRouter.get('/role/student', authController.getUsersRolesStudent);
 
-module.exports = authRouter;
+export default authRouter;
