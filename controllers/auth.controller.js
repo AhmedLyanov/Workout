@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import dotenv from "dotenv";
+import transporter from "../config/mailer.js";
 
 dotenv.config();
 
@@ -44,6 +45,14 @@ class AuthController {
       const user = new User(newUser);
       const token = generateToken(user);
       await user.save();
+
+      await transporter.sendMail({
+        from: 'Workout <amoshal1997@gmail.com>',
+        to: email,
+        subject: "Добро пожаловать!",
+        text: "тестовое сообщение приветсвия",
+        html: `<p>Вы зарегистрировались в workout</p>`
+      })
       return res.status(201).json({ message: user, token });
     } catch (error) {
       console.error("Registration error:", error);
